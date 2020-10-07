@@ -1,0 +1,72 @@
+/*  */
+
+div {
+    border: 1px solid teal;
+}
+
+#board {
+    display: grid;
+    grid-gap: 0;
+    grid-template-columns: repeat(5,1fr);
+    grid-template-rows: repeat(5, 1fr);
+    grid-template-areas: 
+
+    "title title title title title"
+    "side1 game1 game2 game3 side2"
+    "side1 game4 game5 game6 side2"
+    "side1 game7 game8 game9 side2"
+    "footer footer footer footer footer"
+}
+
+.title {
+    grid-area: title;
+    text-align: center;
+}
+
+.side1 {
+    grid-area: side1;
+}
+
+.side2 {
+    grid-area: side2;
+}
+
+.game1 {
+    grid-area: game1;
+}
+
+.game2 {
+    grid-area: game2;
+}
+.game3 {
+    grid-area: game3;
+}
+
+.game4 {
+    grid-area: game4;
+}
+
+.game5 {
+    grid-area: game5;
+}
+
+.game6 {
+    grid-area: game6;
+}
+
+.game7 {
+    grid-area: game7;
+}
+
+.game8 {
+    grid-area: game8;
+}
+
+.game9 {
+    grid-area: game9;
+}
+
+.footer {
+    grid-area: footer;
+    text-align: center;
+}
