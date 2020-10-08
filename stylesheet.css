@@ -1,9 +1,5 @@
 /*  */
 
-div {
-    border: 1px solid teal;
-}
-
 #board {
     display: grid;
     grid-gap: 0;
@@ -18,55 +14,67 @@ div {
     "footer footer footer footer footer"
 }
 
-.title {
+#title {
     grid-area: title;
     text-align: center;
 }
 
-.side1 {
+#side1 {
     grid-area: side1;
 }
 
-.side2 {
+#side2 {
     grid-area: side2;
 }
 
-.game1 {
+#game1 {
     grid-area: game1;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
-.game2 {
+#game2 {
     grid-area: game2;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
 }
-.game3 {
+#game3 {
     grid-area: game3;
+    border-bottom: 1px solid black;
 }
 
-.game4 {
+#game4 {
     grid-area: game4;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
-.game5 {
+#game5 {
     grid-area: game5;
+    border-right: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
-.game6 {
+#game6 {
     grid-area: game6;
+    border-bottom: 1px solid black;
 }
 
-.game7 {
+#game7 {
     grid-area: game7;
+    border-right: 1px solid black;
 }
 
-.game8 {
+#game8 {
     grid-area: game8;
+    border-right: 1px solid black;
 }
 
-.game9 {
+#game9 {
     grid-area: game9;
 }
 
-.footer {
+#footer {
     grid-area: footer;
     text-align: center;
 }
