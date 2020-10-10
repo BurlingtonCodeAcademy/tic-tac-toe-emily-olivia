@@ -15,6 +15,8 @@ let game9 = document.getElementById('game9')
 let gameOver =
 
 
+
+
     startButton.addEventListener('click', () => {
 
         game1.innerText = ''
@@ -41,38 +43,42 @@ let gameOver =
         gameOver = false
 
         clickedCell.forEach(function (clickedCellArrayItem) {
-            clickedCellArrayItem.addEventListener("click", function newFunction(evt) {
-                if (player === 'x' && gameOver === false) {
-                    clickedCellArrayItem.textContent = 'x'  //an x appears in that cell
-                    player = "o"  // and the turn ends
-                    status.innerText = "player o's turn" // and the current player changes from x to o
-                    evt.target.removeEventListener('click', newFunction) // this keeps the player from selecting a filled cell
-                    //evt.target.addEventListener('click', (evt) => {
-                      //  alert('please select an empty cell')
-                   // })
-                    determineWin();
-
-                } else if (player === 'o' && gameOver === false) {
-                    clickedCellArrayItem.textContent = 'o'  //an o appears in that cell
-                    player = 'x'   // and the turn ends
-                    status.innerText = "player x's turn" // and the current player changes from o to x
-                    evt.target.removeEventListener('click', newFunction) // this keeps the player from selecting a filled cell
-                  ////  evt.target.addEventListener('click', (evt) => {
-                     //   alert('please select an empty cell')
-                  //  })
-                    determineWin();
-
-                }
-            })
+            clickedCellArrayItem.addEventListener("click", newFunction)
         })
-
-
     })
+
 
 // **********************************
 // compare the text content of our board, no need to compare the array 
 // if cell content === x and the next === x and the next === x,
 //     alert you win, throw a line, disable moves.
+
+function newFunction(evt) {
+    console.log(player + "line 47 before if else")
+    if (player === 'x' && gameOver === false) {
+        evt.target.textContent = 'x'  //an x appears in that cell
+        player = "o"  // and the turn ends
+        console.log(player + "after player x clicks and should turn to o")
+        status.innerText = "player o's turn" // and the current player changes from x to o
+        evt.target.removeEventListener('click', newFunction) // this keeps the player from selecting a filled cell
+        evt.target.addEventListener('click', emptyAlert)
+        determineWin();
+    } else if (player === 'o' && gameOver === false) {
+        evt.target.textContent = 'o'  //an o appears in that cell
+        player = 'x'   // and the turn ends
+        console.log(player + "after player o clicks and should turn to x")
+        status.innerText = "player x's turn" // and the current player changes from o to x
+        evt.target.removeEventListener('click', newFunction) // this keeps the player from selecting a filled cell
+        evt.target.addEventListener('click', emptyAlert)
+        determineWin();
+    }
+}
+
+
+
+function emptyAlert(evt) {
+    alert('please select an empty cell')
+}
 
 function determineWin() {
     if (game1.textContent === 'x' && game2.textContent === 'x' && game3.textContent === 'x') {
@@ -215,10 +221,15 @@ function determineWin() {
     }
 }
 
-
-
 function reset() {
     startButton.innerText = "PLAY AGAIN"
     startButton.disabled = false;
+    player = "x"
+    clickedCell.forEach(function (cell){
+        cell.removeEventListener('click', emptyAlert)
+        cell.removeEventListener('click', newFunction)
+        cell.addEventListener('click', newFunction)
+    })
+    
 
 }
