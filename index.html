@@ -14,6 +14,22 @@
     <div id='title'>
       <h1>Tic Tac Toe!</h1>
     </div>
+
+    <div id="buttons">
+      <h3>Please select a game style</h3>
+      <button id="pvp">Player VS Player</button>
+      <button id="pvc">Player VS Computer</button>
+    </div>
+
+    <div id="form">
+      <form id="playerNames">
+        <input id="playerOne" type="text" name="playerOne" placeholder="Enter Player One Name..">
+        <input id="playerTwo" type="text" name="playerTwo" placeholder="Enter Player Two Name..">
+        <input id="submit" type='submit' value='Enter Names' />
+      </form>
+    </div>
+
+    
     <div id = 'side1' ></div>
     <div id = 'game1' class='empty'></div>
     <div id = 'game2' class='empty'></div>
@@ -30,6 +46,7 @@
       <button id='start'>Start Game</button>
       <p>Status:</p>
       <p id="status"></p>
+      <p id="time"></p>
     </div>
   </div>
   <script src="script.js"></script>
