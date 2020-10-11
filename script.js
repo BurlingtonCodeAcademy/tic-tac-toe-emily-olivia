@@ -1,4 +1,4 @@
-// gather objects
+// global variables
 let startButton = document.getElementById('start')
 let status = document.getElementById('status')
 let clickedCell = Array.from(document.getElementsByClassName('empty'))
@@ -16,6 +16,11 @@ let game7 = document.getElementById('game7')
 let game8 = document.getElementById('game8')
 let game9 = document.getElementById('game9')
 let gameOver = false
+let submit = document.getElementById('submit')
+let pvpButton = document.getElementById('pvp')
+let pvcButton = document.getElementById('pvc')
+
+
 
 // all variables for timer
 let seconds = 0
@@ -23,92 +28,33 @@ let displaySeconds = 0
 let interval = null
 let timerStatus = "stopped"
 
-nameForm.addEventListener('submit', addNames)
+// ***************** gameplay ****************** //
+startButton.disabled = true;
 
-startButton.addEventListener('click', () => {
-    timerStatus = "stopped"
-    document.getElementById("time").innerText = "STARTING GAME COUNTER...."
-    startStop();
-    game1.innerText = ''
-    game1.style.backgroundColor = "white"
-    game2.innerText = ''
-    game2.style.backgroundColor = "white"
-    game3.innerText = ''
-    game3.style.backgroundColor = "white"
-    game4.innerText = ''
-    game4.style.backgroundColor = "white"
-    game5.innerText = ''
-    game5.style.backgroundColor = "white"
-    game6.innerText = ''
-    game6.style.backgroundColor = "white"
-    game7.innerText = ''
-    game7.style.backgroundColor = "white"
-    game8.innerText = ''
-    game8.style.backgroundColor = "white"
-    game9.innerText = ''
-    game9.style.backgroundColor = "white"
-    startButton.disabled = true;
-    status.innerText = nameOne.value + '\'s turn!'
-    player = 'x'
-    gameOver = false
-
-    clickedCell.forEach(function (clickedCellArrayItem) {
-        clickedCellArrayItem.addEventListener("click", newFunction)
-    })
-
-
+pvpButton.addEventListener('click', (evt) => {
+    pvcButton.disabled = true
+    startGamepvp()
 })
 
-function addNames(evt) {
-    evt.preventDefault()
-    let nameOne = playerOne.value
-    let nameTwo = playerTwo.value
-    status.innerText = nameOne + ' will be X\'s. ' + nameTwo + ' will be O\'s.'
-}
+// pvcButton.addEventListener('click', (evt) => {
+//     pvpButton.disabled = true
+//     startGamepvc()
+// })
 
-// **********************************
-// compare the text content of our board, no need to compare the array 
-// if cell content === x and the next === x and the next === x,
-//     alert you win, throw a line, disable moves.
 
-function newFunction(evt) {
-    console.log(player + "line 47 before if else")
-    if (player === 'x' && gameOver === false) {
-        evt.target.textContent = 'x'  //an x appears in that cell
-        player = "o"  // and the turn ends
-        console.log(player + "after player x clicks and should turn to o")
-        status.innerText = nameTwo.value + '\'s turn!' // and the current player changes from x to o
-        evt.target.removeEventListener('click', newFunction) // this keeps the player from selecting a filled cell
-        evt.target.addEventListener('click', emptyAlert)
-        determineWin();
-    } else if (player === 'o' && gameOver === false) {
-        evt.target.textContent = 'o'  //an o appears in that cell
-        player = 'x'   // and the turn ends
-        console.log(player + "after player o clicks and should turn to x")
-        status.innerText = nameOne.value + '\'s turn!' // and the current player changes from o to x
-        evt.target.removeEventListener('click', newFunction) // this keeps the player from selecting a filled cell
-        evt.target.addEventListener('click', emptyAlert)
-        determineWin();
-    }
-}
 
+// ************** stopwatch functions ****************//
 //stopwatch function
 function stopWatch() {
-
     seconds++;
 
     //display updated time value to game
-
     if (seconds < 10) {
         displaySeconds = "0" + seconds.toString();
     }
     else { displaySeconds = seconds; }
-
     document.getElementById("time").innerText = "Time Elapsed " + displaySeconds + " Seconds";
-
 }
-
-
 
 // when the start game or play agin button is clicked the timer will begin
 function startStop() {
@@ -117,15 +63,138 @@ function startStop() {
         timerStatus = "started"
     }
 }
-//clear the interval in the window and set seconds back to 0
 
+//clear the interval in the window and set seconds back to 0
 function resetTime() {
 
     window.clearInterval(interval);
     seconds = 0;
 }
 
-///// above all functions for game timer
+// ****************** global fuctions ******************* //
+
+pvcButton.addEventListener('click', (evt) => {
+    pvpButton.disabled = true
+    startGamepvc()
+})
+
+
+function startGamepvc() {
+    submit.disabled = true
+    startButton.disabled = false
+    startButton.addEventListener('click', () => {
+        timerStatus = "stopped"
+        document.getElementById("time").innerText = "STARTING GAME COUNTER...."
+        startStop();
+        game1.innerText = ''
+        game1.style.backgroundColor = "white"
+        game2.innerText = ''
+        game2.style.backgroundColor = "white"
+        game3.innerText = ''
+        game3.style.backgroundColor = "white"
+        game4.innerText = ''
+        game4.style.backgroundColor = "white"
+        game5.innerText = ''
+        game5.style.backgroundColor = "white"
+        game6.innerText = ''
+        game6.style.backgroundColor = "white"
+        game7.innerText = ''
+        game7.style.backgroundColor = "white"
+        game8.innerText = ''
+        game8.style.backgroundColor = "white"
+        game9.innerText = ''
+        game9.style.backgroundColor = "white"
+        startButton.disabled = true;
+        status.innerText = 'Player\'s turn'
+        player = 'x'
+        gameOver = false
+
+        clickedCell.forEach(function (clickedCellArrayItem) {
+            clickedCellArrayItem.addEventListener("click", newFunctionpvc)
+        })
+    })
+}
+
+
+function startGamepvp() {
+    nameForm.addEventListener('submit', addNames)
+
+    startButton.addEventListener('click', () => {
+        submit.disabled = true
+        timerStatus = "stopped"
+        document.getElementById("time").innerText = "STARTING GAME COUNTER...."
+        startStop();
+        game1.innerText = ''
+        game1.style.backgroundColor = "white"
+        game2.innerText = ''
+        game2.style.backgroundColor = "white"
+        game3.innerText = ''
+        game3.style.backgroundColor = "white"
+        game4.innerText = ''
+        game4.style.backgroundColor = "white"
+        game5.innerText = ''
+        game5.style.backgroundColor = "white"
+        game6.innerText = ''
+        game6.style.backgroundColor = "white"
+        game7.innerText = ''
+        game7.style.backgroundColor = "white"
+        game8.innerText = ''
+        game8.style.backgroundColor = "white"
+        game9.innerText = ''
+        game9.style.backgroundColor = "white"
+        startButton.disabled = true;
+        status.innerText = nameOne.value + '\'s turn!'
+        player = 'x'
+        gameOver = false
+
+        clickedCell.forEach(function (clickedCellArrayItem) {
+            clickedCellArrayItem.addEventListener("click", newFunctionpvp)
+        })
+    })
+}
+
+
+function newFunctionpvc() {
+    if (player === 'x' && gameOver === false) {
+        evt.target.textContent = 'x'  //an x appears in that cell
+        player = "o"  // and the turn ends
+        status.innerText = nameTwo.value + '\'s turn!' // and the current player changes from x to o
+        evt.target.removeEventListener('click', newFunctionpvp) // this keeps the player from selecting a filled cell
+        evt.target.addEventListener('click', emptyAlert)
+        determineWin();
+    } else if (player === 'o' && gameOver === false) {
+        let comp = moves[Math.floor(Math.random()]
+        player = 'x'   // and the turn ends
+        status.innerText = 'Computer\'s turn!' // and the current player changes from o to x
+        determineWin();
+    }
+}
+
+function addNames(evt) {
+    evt.preventDefault()
+    let nameOne = playerOne.value
+    let nameTwo = playerTwo.value
+    status.innerText = nameOne + ' will be X\'s. ' + nameTwo + ' will be O\'s.'
+    startButton.disabled = false
+}
+
+function newFunctionpvp(evt) {
+    if (player === 'x' && gameOver === false) {
+        evt.target.textContent = 'x'  //an x appears in that cell
+        player = "o"  // and the turn ends
+        status.innerText = nameTwo.value + '\'s turn!' // and the current player changes from x to o
+        evt.target.removeEventListener('click', newFunctionpvp) // this keeps the player from selecting a filled cell
+        evt.target.addEventListener('click', emptyAlert)
+        determineWin();
+    } else if (player === 'o' && gameOver === false) {
+        evt.target.textContent = 'o'  //an o appears in that cell
+        player = 'x'   // and the turn ends
+        status.innerText = nameOne.value + '\'s turn!' // and the current player changes from o to x
+        evt.target.removeEventListener('click', newFunctionpvp) // this keeps the player from selecting a filled cell
+        evt.target.addEventListener('click', emptyAlert)
+        determineWin();
+    }
+}
 
 function emptyAlert(evt) {
     alert('please select an empty cell')
@@ -296,9 +365,7 @@ function reset() {
     player = "x"
     clickedCell.forEach(function (cell) {
         cell.removeEventListener('click', emptyAlert)
-        cell.removeEventListener('click', newFunction)
-        cell.addEventListener('click', newFunction)
+        cell.removeEventListener('click', newFunctionpvp)
+        cell.addEventListener('click', newFunctionpvp)
     })
-
-
 }
