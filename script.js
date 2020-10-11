@@ -36,11 +36,10 @@ pvpButton.addEventListener('click', (evt) => {
     startGamepvp()
 })
 
-// pvcButton.addEventListener('click', (evt) => {
-//     pvpButton.disabled = true
-//     startGamepvc()
-// })
-
+pvcButton.addEventListener('click', (evt) => {
+    pvpButton.disabled = true
+    startGamepvc()
+})
 
 
 // ************** stopwatch functions ****************//
@@ -72,11 +71,6 @@ function resetTime() {
 }
 
 // ****************** global fuctions ******************* //
-
-pvcButton.addEventListener('click', (evt) => {
-    pvpButton.disabled = true
-    startGamepvc()
-})
 
 
 function startGamepvc() {
@@ -153,22 +147,45 @@ function startGamepvp() {
     })
 }
 
-
-function newFunctionpvc() {
+// ******************************************************
+// ******************************************************
+// ******************************************************
+function newFunctionpvc(evt) {
+    let nameOne = "Player X"
+    let nameTwo = "Computer"
     if (player === 'x' && gameOver === false) {
-        evt.target.textContent = 'x'  //an x appears in that cell
-        player = "o"  // and the turn ends
-        status.innerText = nameTwo.value + '\'s turn!' // and the current player changes from x to o
-        evt.target.removeEventListener('click', newFunctionpvp) // this keeps the player from selecting a filled cell
+        evt.target.textContent = 'x'  //an x appears in that cell // and the turn ends
+        status.innerText = `${nameTwo}'s turn` // and the current player changes from x to o
+        evt.target.removeEventListener('click', newFunctionpvc) // this keeps the player from selecting a filled cell
         evt.target.addEventListener('click', emptyAlert)
         determineWin();
-    } else if (player === 'o' && gameOver === false) {
-        let comp = moves[Math.floor(Math.random()]
-        player = 'x'   // and the turn ends
-        status.innerText = 'Computer\'s turn!' // and the current player changes from o to x
+
+        let move = Math.floor(Math.random() * 9) + 1
+        console.log(move)
+        let compMove = 'game' + move.toString()
+        console.log(compMove)
+        let newArray = [compMove]
+        console.log(newArray[0])
+        let hope = document.getElementById(newArray[0])
+        console.log(hope)
+        hope.innerText = 'o'
+        // if (newArray[0].innerText === '') {
+        //     let hope = document.getElementById(newArray[0])
+        //     console.log(hope)
+        //     hope.innerText = 'o'
+        //     console.log(hope + ' hello?')
+        // } else {
+        //     console.log('damn')
+        // }
+           // and the turn ends
+        status.innerText = `${nameOne}'s turn` // and the current player changes from o to x
         determineWin();
     }
 }
+// ******************************************************
+// ******************************************************
+// ******************************************************
+
 
 function addNames(evt) {
     evt.preventDefault()
