@@ -19,10 +19,10 @@ h1{
         "title title title title title"
         "buttons buttons buttons buttons buttons"
         ". form form form ."
+        "start start start start start"
         "side1 game1 game2 game3 side2"
         "side1 game4 game5 game6 side2"
         "side1 game7 game8 game9 side2"
-        "footer footer footer footer footer"
         "restart restart restart restart restart"
 }
 
@@ -119,8 +119,8 @@ h1{
     font-size: 100px
 }
 
-#footer {
-    grid-area: footer;
+#startStatus {
+    grid-area: start;
     text-align: center;
  
 

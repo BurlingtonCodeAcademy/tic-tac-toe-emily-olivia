@@ -1,4 +1,4 @@
-// global variables
+// DOM and Global variables
 let startButton = document.getElementById('start')
 let status = document.getElementById('status')
 let clickedCell = Array.from(document.getElementsByClassName('empty'))
@@ -20,15 +20,15 @@ let submit = document.getElementById('submit')
 let pvpButton = document.getElementById('pvp')
 let pvcButton = document.getElementById('pvc')
 
-
-
 // all variables for timer
 let seconds = 0
 let displaySeconds = 0
 let interval = null
 let timerStatus = "stopped"
 
+
 // ***************** gameplay ****************** //
+// the browser loads with the start button disabled. First the player must select what type of game they wish to play; Player vs Player or Player vs Computer. 
 startButton.disabled = true;
 
 pvpButton.addEventListener('click', (evt) => {
@@ -41,7 +41,10 @@ pvcButton.addEventListener('click', (evt) => {
     startGamepvc()
 })
 
+
 // ************** stopwatch functions ****************//
+// Depending what the player choses above, a branch of different of events will occur. The first of these is activating the Start button. When it is pressed, a stopwatch function will begin. The code for that is below.
+
 //stopwatch function
 function stopWatch() {
     seconds++;
@@ -70,6 +73,10 @@ function resetTime() {
 }
 
 // ****************** global fuctions ******************* //
+// The below functions are responsible for our main gameplay. 
+
+// ************* PVC Functions ********************//
+// The blow function determines the board set up at start of play and reset
 function startGamepvc() {
     pvcButton.disabled = true
     submit.disabled = true
@@ -99,16 +106,63 @@ function startGamepvc() {
         game9.innerText = ''
         game9.style.backgroundColor = "white"
         startButton.disabled = true;
-        status.innerText = 'Player\'s turn'
+        status.innerText = 'Player X\'s turn'
         player = 'x'
         gameOver = false
 
         clickedCell.forEach(function (clickedCellArrayItem) {
-            clickedCellArrayItem.addEventListener("click", newFunctionpvc)
+            clickedCellArrayItem.addEventListener("click", turnsPVC)
         })
     })
 }
 
+// The below function is responsible for handling player and computer moves
+function turnsPVC(evt) {
+    nameOne.value = "Player X"
+    nameTwo.value = "Computer"
+    if (player === 'x' && gameOver === false && evt.target.textContent !== 'o') {
+        // player moves
+        evt.target.textContent = 'x'  
+        evt.target.removeEventListener('click', turnsPVC) 
+        evt.target.addEventListener('click', emptyAlert)
+        determineWin();
+
+        // computer moves
+        compMoveFunction()
+
+        status.innerText = `Player X's turn` 
+        determineWin();
+    }
+}
+
+// The below function determines the computer move
+function compMoveFunction() {
+    let compNum = Math.floor(Math.random() * 9) + 1 // generate a random number
+    let compMove = 'game' + compNum.toString()      // concatenate the random number with  'game' and turn into a string to create an id name from our HTML cell elements
+    let newArray = [compMove] // turn the string into an array so we can access it
+    let randomCellId = document.getElementById(newArray[0])
+    // access the HTML cell element associated with the randomly generated cell id
+    if (randomCellId.innerText === '' && gameOver === false) {
+        randomCellId.innerText = 'o'  // fill that cell with an 'o' to signify computer move
+        randomCellId.removeEventListener('click', turnsPVC)
+        randomCellId.addEventListener('click', emptyAlert)
+    } else if (randomCellId.innerText === 'x' || randomCellId.innerText === 'o' && gameOver === false) {
+        compMoveFunction()
+    } else {
+        return randomCellId
+    }
+}
+
+// ************* PVP Functions ********************//
+// The below function gathers player names from the HTML form
+function addNames(evt) {
+    evt.preventDefault()
+    let nameOne = playerOne.value
+    let nameTwo = playerTwo.value
+    status.innerText = nameOne + ' will be X\'s. ' + nameTwo + ' will be O\'s.'
+    startButton.disabled = false
+}
+// The blow function determines the board set up at start of play and reset
 function startGamepvp() {
     pvpButton.disabled = true
     nameForm.addEventListener('submit', addNames)
@@ -142,75 +196,36 @@ function startGamepvp() {
         gameOver = false
 
         clickedCell.forEach(function (clickedCellArrayItem) {
-            clickedCellArrayItem.addEventListener("click", newFunctionpvp)
+            clickedCellArrayItem.addEventListener("click", turnsPVP)
         })
     })
 }
-
-function newFunctionpvc(evt) {
-    let nameOne = "Player X"
-    let nameTwo = "Computer"
-    if (player === 'x' && gameOver === false && evt.target.textContent !== 'o') {
-        evt.target.textContent = 'x'  //an x appears in that cell // and the turn ends
-        evt.target.removeEventListener('click', newFunctionpvc) // this keeps the player from selecting a filled cell
-        evt.target.addEventListener('click', emptyAlert)
-        determineWin();
-
-        //computer moves
-        compMoveFunction()
-
-        status.innerText = `${nameOne}'s turn` // and the current player changes from o to x
-        determineWin();
-    }
-}
-
-function compMoveFunction() {
-    let compNum = Math.floor(Math.random() * 9) + 1
-    let compMove = 'game' + compNum.toString()      // concatenate the random number with  'game' and turn into a string to create an id name from our HTML cell elements
-    let newArray = [compMove]                    // turn the string into an array so we can access it
-    let hope = document.getElementById(newArray[0])
-    // access the HTML cell element associated with the randomly generated cell i
-    if (hope.innerText === '' && gameOver === false) {
-        hope.innerText = 'o'        // fill that cell with an 'o' to signify computer move
-        hope.removeEventListener('click', newFunctionpvc)
-        hope.addEventListener('click', emptyAlert)
-    } else if (hope.innerText === 'x' || hope.innerText === 'o' && gameOver === false) {
-        compMoveFunction()
-    } else {
-        return hope
-    }
-}
-
-function addNames(evt) {
-    evt.preventDefault()
-    let nameOne = playerOne.value
-    let nameTwo = playerTwo.value
-    status.innerText = nameOne + ' will be X\'s. ' + nameTwo + ' will be O\'s.'
-    startButton.disabled = false
-}
-
-function newFunctionpvp(evt) {
+// The blow function handles player vs player turns
+function turnsPVP(evt) {
     if (player === 'x' && gameOver === false) {
         evt.target.textContent = 'x'  //an x appears in that cell
         player = "o"  // and the turn ends
         status.innerText = nameTwo.value + '\'s turn!' // and the current player changes from x to o
-        evt.target.removeEventListener('click', newFunctionpvp) // this keeps the player from selecting a filled cell
+        evt.target.removeEventListener('click', turnsPVP) // this keeps the player from selecting a filled cell
         evt.target.addEventListener('click', emptyAlert)
         determineWin();
     } else if (player === 'o' && gameOver === false) {
         evt.target.textContent = 'o'  //an o appears in that cell
         player = 'x'   // and the turn ends
         status.innerText = nameOne.value + '\'s turn!' // and the current player changes from o to x
-        evt.target.removeEventListener('click', newFunctionpvp) // this keeps the player from selecting a filled cell
+        evt.target.removeEventListener('click', turnsPVP) // this keeps the player from selecting a filled cell
         evt.target.addEventListener('click', emptyAlert)
         determineWin();
     }
 }
-
+ 
+// ****************** General Functions **************** //
+// The below function creates an alert when a player tries to select a full cell
 function emptyAlert(evt) {
     alert('please select an empty cell')
 }
 
+// The below function checks for win conditions and the program's response
 function determineWin() {
     if (game1.textContent === 'x' && game2.textContent === 'x' && game3.textContent === 'x') {
         game1.style.backgroundColor = "red"
@@ -362,22 +377,22 @@ function determineWin() {
 
     } else if (game1.textContent !== "" && game2.textContent !== "" && game3.textContent !== "" && game4.textContent !== "" && game5.textContent !== "" && game6.textContent !== "" && game7.textContent !== "" && game8.textContent !== "" && game9.textContent !== "") {
         gameOver = true
-        alert("It's a draw!!!")
-        status.innerText = 'BETTER LUCK NEXT TIME'
+        status.innerText = 'IT\'S A DRAW. BETTER LUCK NEXT TIME'
         resetTime();
         reset();
 
     }
 }
 
+// The below function resets the game when the player selects play again
 function reset() {
     startButton.innerText = "PLAY AGAIN"
     startButton.disabled = false;
     player = "x"
     clickedCell.forEach(function (cell) {
         cell.removeEventListener('click', emptyAlert)
-        cell.removeEventListener('click', newFunctionpvp)
-        cell.addEventListener('click', newFunctionpvp)
+        cell.removeEventListener('click', turnsPVP)
+        cell.addEventListener('click', turnsPVP)
     })
 }
 
