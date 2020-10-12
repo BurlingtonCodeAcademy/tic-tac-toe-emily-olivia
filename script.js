@@ -41,7 +41,6 @@ pvcButton.addEventListener('click', (evt) => {
     startGamepvc()
 })
 
-
 // ************** stopwatch functions ****************//
 //stopwatch function
 function stopWatch() {
@@ -71,11 +70,12 @@ function resetTime() {
 }
 
 // ****************** global fuctions ******************* //
-
-
 function startGamepvc() {
+    pvcButton.disabled = true
     submit.disabled = true
     startButton.disabled = false
+    nameOne.disabled = true
+    nameTwo.disabled = true
     startButton.addEventListener('click', () => {
         timerStatus = "stopped"
         document.getElementById("time").innerText = "STARTING GAME COUNTER...."
@@ -109,8 +109,8 @@ function startGamepvc() {
     })
 }
 
-
 function startGamepvp() {
+    pvpButton.disabled = true
     nameForm.addEventListener('submit', addNames)
 
     startButton.addEventListener('click', () => {
@@ -147,45 +147,39 @@ function startGamepvp() {
     })
 }
 
-// ******************************************************
-// ******************************************************
-// ******************************************************
 function newFunctionpvc(evt) {
     let nameOne = "Player X"
     let nameTwo = "Computer"
-    if (player === 'x' && gameOver === false) {
+    if (player === 'x' && gameOver === false && evt.target.textContent !== 'o') {
         evt.target.textContent = 'x'  //an x appears in that cell // and the turn ends
-        status.innerText = `${nameTwo}'s turn` // and the current player changes from x to o
         evt.target.removeEventListener('click', newFunctionpvc) // this keeps the player from selecting a filled cell
         evt.target.addEventListener('click', emptyAlert)
         determineWin();
 
-        let move = Math.floor(Math.random() * 9) + 1
-        console.log(move)
-        let compMove = 'game' + move.toString()
-        console.log(compMove)
-        let newArray = [compMove]
-        console.log(newArray[0])
-        let hope = document.getElementById(newArray[0])
-        console.log(hope)
-        hope.innerText = 'o'
-        // if (newArray[0].innerText === '') {
-        //     let hope = document.getElementById(newArray[0])
-        //     console.log(hope)
-        //     hope.innerText = 'o'
-        //     console.log(hope + ' hello?')
-        // } else {
-        //     console.log('damn')
-        // }
-           // and the turn ends
+        //computer moves
+        compMoveFunction()
+
         status.innerText = `${nameOne}'s turn` // and the current player changes from o to x
         determineWin();
     }
 }
-// ******************************************************
-// ******************************************************
-// ******************************************************
 
+function compMoveFunction() {
+    let compNum = Math.floor(Math.random() * 9) + 1
+    let compMove = 'game' + compNum.toString()      // concatenate the random number with  'game' and turn into a string to create an id name from our HTML cell elements
+    let newArray = [compMove]                    // turn the string into an array so we can access it
+    let hope = document.getElementById(newArray[0])
+    // access the HTML cell element associated with the randomly generated cell i
+    if (hope.innerText === '' && gameOver === false) {
+        hope.innerText = 'o'        // fill that cell with an 'o' to signify computer move
+        hope.removeEventListener('click', newFunctionpvc)
+        hope.addEventListener('click', emptyAlert)
+    } else if (hope.innerText === 'x' || hope.innerText === 'o' && gameOver === false) {
+        compMoveFunction()
+    } else {
+        return hope
+    }
+}
 
 function addNames(evt) {
     evt.preventDefault()
@@ -367,9 +361,9 @@ function determineWin() {
         reset();
 
     } else if (game1.textContent !== "" && game2.textContent !== "" && game3.textContent !== "" && game4.textContent !== "" && game5.textContent !== "" && game6.textContent !== "" && game7.textContent !== "" && game8.textContent !== "" && game9.textContent !== "") {
+        gameOver = true
         alert("It's a draw!!!")
         status.innerText = 'BETTER LUCK NEXT TIME'
-        gameOver = true
         resetTime();
         reset();
 
@@ -386,3 +380,4 @@ function reset() {
         cell.addEventListener('click', newFunctionpvp)
     })
 }
+
