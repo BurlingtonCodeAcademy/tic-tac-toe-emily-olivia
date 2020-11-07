@@ -6,6 +6,9 @@ let player = ''
 let nameOne = document.getElementById('playerOne')
 let nameTwo = document.getElementById('playerTwo')
 let nameForm = document.getElementById('playerNames')
+let squares = document.getElementsByClassName('empty')
+console.log(squares)
+//get back an object that is iteratable
 let game1 = document.getElementById('game1')
 let game2 = document.getElementById('game2')
 let game3 = document.getElementById('game3')
@@ -31,15 +34,15 @@ let timerStatus = "stopped"
 // the browser loads with the start button disabled. First the player must select what type of game they wish to play; Player vs Player or Player vs Computer. 
 startButton.disabled = true;
 
-pvpButton.addEventListener('click', (evt) => {
-    pvcButton.disabled = true
-    startGamepvp()
-})
+const addStart = (button, startGame) => {
+    button.addEventListener('click', (evt) => {
+        button.disabled = true
+        startGame()
+    })
+}
 
-pvcButton.addEventListener('click', (evt) => {
-    pvpButton.disabled = true
-    startGamepvc()
-})
+addStart(pvpButton, startGamepvp)
+addStart(pvcButton, startGamepvc)
 
 
 // ************** stopwatch functions ****************//
@@ -122,15 +125,15 @@ function turnsPVC(evt) {
     nameTwo.value = "Computer"
     if (player === 'x' && gameOver === false && evt.target.textContent !== 'o') {
         // player moves
-        evt.target.textContent = 'x'  
-        evt.target.removeEventListener('click', turnsPVC) 
+        evt.target.textContent = 'x'
+        evt.target.removeEventListener('click', turnsPVC)
         evt.target.addEventListener('click', emptyAlert)
         determineWin();
 
         // computer moves
         compMoveFunction()
 
-        status.innerText = `Player X's turn` 
+        status.innerText = `Player X's turn`
         determineWin();
     }
 }
@@ -204,6 +207,8 @@ function startGamepvp() {
 function turnsPVP(evt) {
     if (player === 'x' && gameOver === false) {
         evt.target.textContent = 'x'  //an x appears in that cell
+        //get elemtent by id
+        //change the class from empty to x or o
         player = "o"  // and the turn ends
         status.innerText = nameTwo.value + '\'s turn!' // and the current player changes from x to o
         evt.target.removeEventListener('click', turnsPVP) // this keeps the player from selecting a filled cell
@@ -218,7 +223,7 @@ function turnsPVP(evt) {
         determineWin();
     }
 }
- 
+
 // ****************** General Functions **************** //
 // The below function creates an alert when a player tries to select a full cell
 function emptyAlert(evt) {
@@ -226,161 +231,35 @@ function emptyAlert(evt) {
 }
 
 // The below function checks for win conditions and the program's response
+
+let winConditions = [[game1, game2, game3], [game4, game5, game6], [game7, game8, game9], [game1, game4, game7], [game2, game5, game8], [game3, game6, game9], [game7, game5, game3], [game1, game5, game9]]
+
+
+function determineWinAgain(game1, game2, game3, name) {
+    game1.style.backgroundColor = "red"
+    game2.style.backgroundColor = "red"
+    game3.style.backgroundColor = "red"
+    status.innerText = `Game Over! ${name.value} wins!`
+    gameOver = true
+    resetTime();
+    reset();
+}
+
 function determineWin() {
-    if (game1.textContent === 'x' && game2.textContent === 'x' && game3.textContent === 'x') {
-        game1.style.backgroundColor = "red"
-        game2.style.backgroundColor = "red"
-        game3.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
+    winConditions.forEach(win => {
+        if (win[0].textContent === 'x' && win[1].textContent === 'x' && win[2].textContent === 'x') {
+            determineWinAgain(win[0], win[1], win[2], nameOne)
+        } else if (win[0].textContent === 'o' && win[1].textContent === 'o' && win[2].textContent === 'o') {
+            determineWinAgain(win[0], win[1], win[2], nameTwo)
+        }
+    })
 
 
-    } else if (game4.textContent === 'x' && game5.textContent === 'x' && game6.textContent === 'x') {
-        game4.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game6.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-
-    } else if (game7.textContent === 'x' && game8.textContent === 'x' && game9.textContent === 'x') {
-        game7.style.backgroundColor = "red"
-        game8.style.backgroundColor = "red"
-        game9.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-
-    } else if (game1.textContent === 'x' && game4.textContent === 'x' && game7.textContent === 'x') {
-        game1.style.backgroundColor = "red"
-        game4.style.backgroundColor = "red"
-        game7.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-
-    } else if (game2.textContent === 'x' && game5.textContent === 'x' && game8.textContent === 'x') {
-        game2.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game8.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game3.textContent === 'x' && game6.textContent === 'x' && game9.textContent === 'x') {
-        game3.style.backgroundColor = "red"
-        game6.style.backgroundColor = "red"
-        game9.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game7.textContent === 'x' && game5.textContent === 'x' && game3.textContent === 'x') {
-        game7.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game3.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game1.textContent === 'x' && game5.textContent === 'x' && game9.textContent === 'x') {
-        game1.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game9.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameOne.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game1.textContent === 'o' && game2.textContent === 'o' && game3.textContent === 'o') {
-        game1.style.backgroundColor = "red"
-        game2.style.backgroundColor = "red"
-        game3.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game4.textContent === 'o' && game5.textContent === 'o' && game6.textContent === 'o') {
-        game4.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game6.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game7.textContent === 'o' && game8.textContent === 'o' && game9.textContent === 'o') {
-        game7.style.backgroundColor = "red"
-        game8.style.backgroundColor = "red"
-        game9.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game1.textContent === 'o' && game4.textContent === 'o' && game7.textContent === 'o') {
-        game1.style.backgroundColor = "red"
-        game4.style.backgroundColor = "red"
-        game7.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game2.textContent === 'o' && game5.textContent === 'o' && game8.textContent === 'o') {
-        game2.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game8.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game3.textContent === 'o' && game6.textContent === 'o' && game9.textContent === 'o') {
-        game3.style.backgroundColor = "red"
-        game6.style.backgroundColor = "red"
-        game9.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game7.textContent === 'o' && game5.textContent === 'o' && game3.textContent === 'o') {
-        game7.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game3.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game1.textContent === 'o' && game5.textContent === 'o' && game9.textContent === 'o') {
-        game1.style.backgroundColor = "red"
-        game5.style.backgroundColor = "red"
-        game9.style.backgroundColor = "red"
-        status.innerText = `Game Over! ${nameTwo.value} wins!`
-        gameOver = true
-        resetTime();
-        reset();
-
-    } else if (game1.textContent !== "" && game2.textContent !== "" && game3.textContent !== "" && game4.textContent !== "" && game5.textContent !== "" && game6.textContent !== "" && game7.textContent !== "" && game8.textContent !== "" && game9.textContent !== "") {
+    if (game1.textContent !== "" && game2.textContent !== "" && game3.textContent !== "" && game4.textContent !== "" && game5.textContent !== "" && game6.textContent !== "" && game7.textContent !== "" && game8.textContent !== "" && game9.textContent !== "") {
         gameOver = true
         status.innerText = 'IT\'S A DRAW. BETTER LUCK NEXT TIME'
         resetTime();
         reset();
-
     }
 }
 
@@ -395,4 +274,3 @@ function reset() {
         cell.addEventListener('click', turnsPVP)
     })
 }
-
