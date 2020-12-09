@@ -44,7 +44,6 @@ const addStart = (button, startGame) => {
 addStart(pvpButton, startGamepvp)
 addStart(pvcButton, startGamepvc)
 
-
 // ************** stopwatch functions ****************//
 // Depending what the player choses above, a branch of different of events will occur. The first of these is activating the Start button. When it is pressed, a stopwatch function will begin. The code for that is below.
 
@@ -80,13 +79,10 @@ function resetTime() {
 
 // ************* PVC Functions ********************//
 // The blow function determines the board set up at start of play and reset
-function startGamepvc() {
-    pvcButton.disabled = true
-    submit.disabled = true
-    startButton.disabled = false
-    nameOne.disabled = true
-    nameTwo.disabled = true
+function clickStart(turns, playerName) {
+
     startButton.addEventListener('click', () => {
+        submit.disabled = true
         timerStatus = "stopped"
         document.getElementById("time").innerText = "STARTING GAME COUNTER...."
         startStop();
@@ -109,14 +105,22 @@ function startGamepvc() {
         game9.innerText = ''
         game9.style.backgroundColor = "white"
         startButton.disabled = true;
-        status.innerText = 'Player X\'s turn'
+        status.innerText = playerName + '\'s turn'
         player = 'x'
         gameOver = false
 
         clickedCell.forEach(function (clickedCellArrayItem) {
-            clickedCellArrayItem.addEventListener("click", turnsPVC)
+            clickedCellArrayItem.addEventListener("click", turns)
         })
     })
+}
+
+function startGamepvc() {
+    // submit.disabled = true
+    startButton.disabled = false
+    nameOne.disabled = true
+    nameTwo.disabled = true
+    clickStart(turnsPVC, 'Player X')
 }
 
 // The below function is responsible for handling player and computer moves
@@ -169,39 +173,7 @@ function addNames(evt) {
 function startGamepvp() {
     pvpButton.disabled = true
     nameForm.addEventListener('submit', addNames)
-
-    startButton.addEventListener('click', () => {
-        submit.disabled = true
-        timerStatus = "stopped"
-        document.getElementById("time").innerText = "STARTING GAME COUNTER...."
-        startStop();
-        game1.innerText = ''
-        game1.style.backgroundColor = "white"
-        game2.innerText = ''
-        game2.style.backgroundColor = "white"
-        game3.innerText = ''
-        game3.style.backgroundColor = "white"
-        game4.innerText = ''
-        game4.style.backgroundColor = "white"
-        game5.innerText = ''
-        game5.style.backgroundColor = "white"
-        game6.innerText = ''
-        game6.style.backgroundColor = "white"
-        game7.innerText = ''
-        game7.style.backgroundColor = "white"
-        game8.innerText = ''
-        game8.style.backgroundColor = "white"
-        game9.innerText = ''
-        game9.style.backgroundColor = "white"
-        startButton.disabled = true;
-        status.innerText = nameOne.value + '\'s turn!'
-        player = 'x'
-        gameOver = false
-
-        clickedCell.forEach(function (clickedCellArrayItem) {
-            clickedCellArrayItem.addEventListener("click", turnsPVP)
-        })
-    })
+    clickStart(turnsPVP, nameOne.value)
 }
 // The blow function handles player vs player turns
 function turnsPVP(evt) {
@@ -253,7 +225,6 @@ function determineWin() {
             determineWinAgain(win[0], win[1], win[2], nameTwo)
         }
     })
-
 
     if (game1.textContent !== "" && game2.textContent !== "" && game3.textContent !== "" && game4.textContent !== "" && game5.textContent !== "" && game6.textContent !== "" && game7.textContent !== "" && game8.textContent !== "" && game9.textContent !== "") {
         gameOver = true
